@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Do You Like Me? 💖</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #000;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background Video */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(40%) blur(5px);
+    }
+
+    /* Container */
+    .container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 50px 60px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0px 10px 30px rgba(255, 105, 180, 0.4);
+      animation: fadeIn 1.5s ease-in-out;
+      width: 60%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    /* Question */
+    h1 {
+      font-size: 2rem;
+      color: #ff4d6d;
+      text-shadow: 2px 2px 10px rgba(255, 105, 180, 0.8);
+      font-weight: bold;
+    }
+
+    /* Buttons */
+    .buttons {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+    }
+
+    #yesButton {
+      background: linear-gradient(90deg, #ff4d6d, #ff7e5f);
+      color: white;
+      box-shadow: 0px 6px 12px rgba(255, 105, 180, 0.6);
+    }
+
+    #yesButton:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 8px 20px rgba(255, 105, 180, 0.9);
+    }
+
+    /* No Button */
+    #noButton {
+      background: linear-gradient(90deg, #6c757d, #495057);
+      color: white;
+      box-shadow: 0px 6px 12px rgba(108, 117, 125, 0.6);
+      transition: transform 0.3s ease-in-out, left 0.3s, top 0.3s;
+      position: relative;
+    }
+
+    /* Floating Hearts */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(-45deg);
+      animation: float 5s linear infinite;
+      opacity: 0.7;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(-45deg); opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(-45deg); opacity: 0; }
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video autoplay muted loop id="bgVideo">
+    <source src="./assets/bg.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Floating Hearts -->
+  <script>
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    setInterval(createHeart, 500);
+  </script>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Do you like me? 💖</h1>
+    <div class="buttons">
+      <button id="yesButton">Yes</button>
+      <button id="noButton">No</button>
+    </div>
+  </div>
+
+  <!-- Confetti Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
+  <!-- JavaScript -->
+  <script>
+    const yesButton = document.getElementById("yesButton");
+    const noButton = document.getElementById("noButton");
+
+    // Confetti effect on "Yes"
+    yesButton.addEventListener("click", () => {
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 }
+      });
+
+      setTimeout(() => {
+        window.location.href = "loading.html"; // Redirect to next page
+      }, 1000);
+    });
+
+    // Move "No" button randomly within the visible area
+    function moveNoButton() {
+      const buttonRect = noButton.getBoundingClientRect();
+      const maxX = window.innerWidth - buttonRect.width;
+      const maxY = window.innerHeight - buttonRect.height;
+
+      // Ensure the button stays within the viewport
+      let newX = Math.random() * 700;
+      let newY = Math.random() * 500;
+
+      // Apply new position
+      noButton.style.position = "fixed";
+      noButton.style.left = `${newX}px`;
+      noButton.style.top = `${newY}px`;
+    }
+
+    // Move the button on hover or click
+    noButton.addEventListener("mouseover", moveNoButton);
+    noButton.addEventListener("click", moveNoButton);
+  </script>
+
+</body>
+</html>

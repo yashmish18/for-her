@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You 💖</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #000;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Background Video */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      filter: brightness(40%) blur(5px);
+    }
+
+    /* Floating Hearts */
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      transform: rotate(-45deg);
+      animation: float 5s linear infinite;
+      opacity: 0.7;
+    }
+
+    .heart::before,
+    .heart::after {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: pink;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: 10px;
+      top: 0;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(-45deg); opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(-45deg); opacity: 0; }
+    }
+
+    /* Text Container */
+    .text-container {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 50px 60px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0px 10px 30px rgba(255, 105, 180, 0.4);
+      animation: fadeIn 1.5s ease-in-out;
+      width: 60%;
+      max-width: 600px;
+      position: relative;
+    }
+
+    /* Text Slides */
+    .text-slide {
+      font-size: 2rem;
+      color: #ff4d6d;
+      text-shadow: 2px 2px 10px rgba(255, 105, 180, 0.8);
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+      transform: translateY(20px);
+      display: none;
+    }
+
+    .text-slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      display: block;
+    }
+
+    /* Next Button */
+    #nextButton {
+      font-size: 1.2rem;
+      margin-top: 30px;
+      padding: 14px 35px;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      background: linear-gradient(90deg, #ff4d6d, #ff7e5f);
+      color: white;
+      font-weight: bold;
+      box-shadow: 0px 6px 12px rgba(255, 105, 180, 0.6);
+      transition: all 0.3s ease-in-out;
+    }
+
+    #nextButton:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 8px 20px rgba(255, 105, 180, 0.9);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video -->
+  <video autoplay muted loop id="bgVideo">
+    <source src="./assets/bg.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Floating Hearts -->
+  <script>
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 2 + 3 + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    setInterval(createHeart, 500);
+  </script>
+
+  <!-- Text Container -->
+  <div class="text-container">
+    <div class="text-slide active"><h2>Since we know each other from 2023</h2></div>
+    <div class="text-slide"><h2>And since I first saw you in the canteen...</h2></div>
+    <div class="text-slide"><h2>I was completely lost in your eyes ✨</h2></div>
+    <div class="text-slide"><h2>From school to farewell...</h2></div>
+    <div class="text-slide"><h2>The only time we talked but...</h2></div>
+    <div class="text-slide"><h2>Your beauty & eyes are still the same for me ❤️</h2></div>
+    <div class="text-slide"><h2>So I have a special question for you... 😊</h2></div>
+    <button id="nextButton">Next</button>
+  </div>
+
+  <!-- JavaScript -->
+  <script>
+    const slides = document.querySelectorAll(".text-slide");
+    const nextButton = document.getElementById("nextButton");
+    let currentIndex = 0;
+
+    nextButton.addEventListener("click", () => {
+      if (currentIndex < slides.length - 1) {
+        slides[currentIndex].classList.remove("active");
+        setTimeout(() => {
+          slides[currentIndex].style.display = "none";
+          currentIndex++;
+          slides[currentIndex].style.display = "block";
+          slides[currentIndex].classList.add("active");
+        }, 400);
+      } else {
+        window.location.href = "question.html"; // Redirect to the next page
+      }
+    });
+  </script>
+
+</body>
+</html>
